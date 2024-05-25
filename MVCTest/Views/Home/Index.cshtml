@@ -1,8 +1,12 @@
-﻿@{
+﻿@using MVCTest.Data
+@{
     ViewData["Title"] = "Home Page";
+
+    string role = !User.Identity!.IsAuthenticated ? "" :
+    User.IsInRole(nameof(Roles.Admin)) ? "Admin!" : "User!";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Welcome @role</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

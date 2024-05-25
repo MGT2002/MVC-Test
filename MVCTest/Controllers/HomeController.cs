@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVCTest.Data;
 using MVCTest.Models;
 using System.Diagnostics;
 
@@ -18,6 +20,7 @@ namespace MVCTest.Controllers
             return View();
         }
 
+        [Authorize(Roles = nameof(Roles.Admin))]
         public IActionResult Privacy()
         {
             return View();

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVCTest.Areas.Identity.Data;
 using MVCTest.Data;
+using MVCTest.Helpers;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException("Connection string 'Default' not found.");
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<MVCTestContext>
 
 builder.Services.AddDefaultIdentity<User>
     (options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MVCTestContext>();
 
 // Add services to the container.
@@ -37,5 +39,20 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    RoleManager<IdentityRole> roleManager = scope.ServiceProvider
+        .GetRequiredService<RoleManager<IdentityRole>>();
+
+    await SeedCreator.CreateRolesAsync(roleManager);
+}
+using (var scope = app.Services.CreateScope())
+{
+    UserManager<User> userManager = scope.ServiceProvider
+        .GetRequiredService<UserManager<User>>();
+
+    await SeedCreator.CreateUsersAsync(userManager);
+}
 
 app.Run();
