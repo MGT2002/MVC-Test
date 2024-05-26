@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCTest.Data;
+using MVCTest.Helpers;
 using MVCTest.Models;
 using System.Diagnostics;
 
@@ -17,7 +18,7 @@ namespace MVCTest.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(ModelGenerator.GenerteTaskViewModel(10));
         }
 
         [Authorize(Roles = nameof(Roles.Admin))]

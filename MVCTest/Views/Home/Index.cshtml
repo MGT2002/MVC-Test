@@ -1,4 +1,6 @@
 ﻿@using MVCTest.Data
+@model IEnumerable<MVCTest.Models.TaskViewModel>
+
 @{
     ViewData["Title"] = "Home Page";
 
@@ -9,4 +11,20 @@
 <div class="text-center">
     <h1 class="display-4">Welcome @role</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="row">
+    @foreach (var task in Model)
+    {
+        <div class="col-md-4">
+            <div class="task-card">
+                <h4>@task.Title</h4>
+                <p class="card-text">@task.Description</p>
+                <div class="card-body">
+                    <span class="@(task.IsCompleted ? "completed" : "")">@task.Assignee</span>
+                    <span class="creator">by @task.Creator</span>
+                </div>
+            </div>
+        </div>
+    }
 </div>
